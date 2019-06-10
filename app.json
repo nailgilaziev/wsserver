@@ -1,0 +1,6 @@
+{
+  "name": "wsserver",
+  "description": "A test app, which inspect ws ping pong functionality",
+  "image": "heroku/java",
+  "addons": [ "heroku-postgresql" ]
+}
