@@ -38,9 +38,14 @@ dependencies {
     compile "io.ktor:ktor-websockets:$ktor_version"
     testCompile "io.ktor:ktor-server-tests:$ktor_version"
 }
+import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 shadowJar {
     manifest {
         attributes 'Main-Class': mainClassName
+    }
+    transform(ServiceFileTransformer) {
+        path = 'META-INF/services'
+        include 'org.eclipse.jetty.http.HttpFieldPreEncoder'
     }
 }
 
