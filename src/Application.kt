@@ -45,6 +45,8 @@ fun Application.module() {
                         }
                     }
                 }
+            } catch (ex: Exception){
+                println("EXCEPTION: $ex")
             } finally {
                 println("user leave $this")
                 wsConnections -= this
