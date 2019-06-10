@@ -37,6 +37,7 @@ fun Application.module() {
                     when (frame) {
                         is Frame.Text -> {
                             val text = frame.readText()
+                            println("text: $text")
                             // Iterate over all the connections
                             for (conn in wsConnections) {
                                 conn.outgoing.send(Frame.Text(text))
