@@ -43,3 +43,5 @@ shadowJar {
         attributes 'Main-Class': mainClassName
     }
 }
+
+task stage(dependsOn: ['shadowJar'])
