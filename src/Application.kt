@@ -10,7 +10,7 @@ import io.ktor.http.cio.websocket.*
 import java.time.*
 import java.util.*
 
-fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 
 @Suppress("unused") // Referenced in application.conf
 
@@ -24,7 +24,7 @@ fun Application.module() {
 
     routing {
         get("/") {
-            call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
+            call.respondText("HELLO WORLD with Jetty!", contentType = ContentType.Text.Plain)
         }
 
         val wsConnections = Collections.synchronizedSet(LinkedHashSet<DefaultWebSocketSession>())
