@@ -7,6 +7,7 @@ import io.ktor.routing.*
 import io.ktor.http.*
 import io.ktor.websocket.*
 import io.ktor.http.cio.websocket.*
+import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import java.time.*
 import java.util.*
 
@@ -47,8 +48,11 @@ fun Application.module() {
                         }
                     }
                 }
-            } catch (ex: Exception){
-                println("EXCEPTION: $ex")
+            } catch (e: ClosedReceiveChannelException) {
+                println("connection closed [${closeReason.await()}] for $user")
+            } catch (e: Throwable) {
+                println("connection interrupted [${closeReason.await()}] for $user")
+                e.printStackTrace()
             } finally {
                 println("$user LEAVE")
                 wsConnections -= this
