@@ -27,7 +27,7 @@ fun Application.module() {
 
     routing {
         get("/") {
-            call.respondText("HELLO WORLD with Jetty!", contentType = ContentType.Text.Plain)
+            call.respondText("HELLO WORLD with Netty!", contentType = ContentType.Text.Plain)
         }
 
         val wsConnections = Collections.synchronizedSet(LinkedHashSet<DefaultWebSocketSession>())
