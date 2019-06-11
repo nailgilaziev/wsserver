@@ -17,6 +17,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 fun Application.module() {
     install(io.ktor.websocket.WebSockets) {
         pingPeriod = Duration.ofSeconds(15)
+        masking = true
         timeout = Duration.ofSeconds(15)
         maxFrameSize = Long.MAX_VALUE
         masking = false
@@ -29,7 +30,8 @@ fun Application.module() {
 
         val wsConnections = Collections.synchronizedSet(LinkedHashSet<DefaultWebSocketSession>())
         webSocket("/chat") {
-            println("user joined $this")
+            val user = this.hashCode()
+            println("$user JOINED")
             wsConnections += this
             try {
                 while (true) {
@@ -37,10 +39,11 @@ fun Application.module() {
                     when (frame) {
                         is Frame.Text -> {
                             val text = frame.readText()
-                            println("text: $text")
+                            val msg = "$user say: $text"
+                            println(msg)
                             // Iterate over all the connections
                             for (conn in wsConnections) {
-                                conn.outgoing.send(Frame.Text(text))
+                                conn.outgoing.send(Frame.Text(msg))
                             }
                         }
                     }
@@ -48,7 +51,7 @@ fun Application.module() {
             } catch (ex: Exception){
                 println("EXCEPTION: $ex")
             } finally {
-                println("user leave $this")
+                println("$user LEAVE")
                 wsConnections -= this
             }
         }
