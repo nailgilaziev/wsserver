@@ -17,7 +17,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 fun Application.module() {
     install(WebSockets) {
         pingPeriod = Duration.ofSeconds(15)
-        masking = false
+        masking = true
         timeout = Duration.ofSeconds(15)
         maxFrameSize = Long.MAX_VALUE
     }
