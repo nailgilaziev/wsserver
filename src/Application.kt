@@ -17,7 +17,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 fun Application.module() {
     install(WebSockets) {
         pingPeriod = Duration.ofSeconds(15)
-        masking = true
+        masking = false
         timeout = Duration.ofSeconds(15)
         maxFrameSize = Long.MAX_VALUE
     }
@@ -47,8 +47,8 @@ fun Application.module() {
                         }
                     }
                 }
-//            } catch (ex: Exception){
-//                println("EXCEPTION: $ex")
+            } catch (ex: Exception){
+                println("EXCEPTION: $ex")
             } finally {
                 println("$user LEAVE")
                 wsConnections -= this
