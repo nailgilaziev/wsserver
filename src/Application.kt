@@ -7,7 +7,9 @@ import io.ktor.routing.*
 import io.ktor.http.*
 import io.ktor.websocket.*
 import io.ktor.http.cio.websocket.*
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
+import kotlinx.coroutines.time.delay
 import java.time.*
 import java.util.*
 
@@ -33,6 +35,11 @@ fun Application.module() {
             val user = this.hashCode()
             println("$user JOINED")
             wsConnections += this
+
+            async {
+                delay(Duration.ofSeconds(2))
+                send(Frame.Text("Welcome from server after 2 sec"))
+            }
             try {
                 while (true) {
                     val frame = incoming.receive()
