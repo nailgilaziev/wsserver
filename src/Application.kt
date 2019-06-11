@@ -13,7 +13,7 @@ import kotlinx.coroutines.time.delay
 import java.time.*
 import java.util.*
 
-fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
+fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused") // Referenced in application.conf
 
