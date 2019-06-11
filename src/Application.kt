@@ -15,12 +15,11 @@ fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 @Suppress("unused") // Referenced in application.conf
 
 fun Application.module() {
-    install(io.ktor.websocket.WebSockets) {
+    install(WebSockets) {
         pingPeriod = Duration.ofSeconds(15)
         masking = true
         timeout = Duration.ofSeconds(15)
         maxFrameSize = Long.MAX_VALUE
-        masking = false
     }
 
     routing {
