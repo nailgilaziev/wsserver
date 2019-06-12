@@ -37,7 +37,7 @@ fun Application.module() {
             wsConnections += this
 
             async {
-                delay(Duration.ofSeconds(5))
+                delay(Duration.ofSeconds(15))
 //                send(Frame.Text("Welcome from server after 2 sec"))
                 close(CloseReason(CloseReason.Codes.UNEXPECTED_CONDITION, "test close"))
             }
