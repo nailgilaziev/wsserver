@@ -20,7 +20,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 fun Application.module() {
     install(WebSockets) {
         pingPeriod = Duration.ofSeconds(15)
-        masking = true
+        masking = false
         timeout = Duration.ofSeconds(15)
         maxFrameSize = Long.MAX_VALUE
     }
@@ -37,8 +37,9 @@ fun Application.module() {
             wsConnections += this
 
             async {
-                delay(Duration.ofSeconds(2))
-                send(Frame.Text("Welcome from server after 2 sec"))
+                delay(Duration.ofSeconds(5))
+//                send(Frame.Text("Welcome from server after 2 sec"))
+                close(CloseReason(CloseReason.Codes.UNEXPECTED_CONDITION, "test close"))
             }
             try {
                 while (true) {
