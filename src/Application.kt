@@ -20,7 +20,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.module() {
     install(WebSockets) {
-        pingPeriod = Duration.ofSeconds(15)
+        pingPeriod = Duration.ofSeconds(30)
         masking = false
         timeout = Duration.ofSeconds(15)
         maxFrameSize = Long.MAX_VALUE
