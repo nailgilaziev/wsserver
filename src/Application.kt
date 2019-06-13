@@ -60,6 +60,7 @@ fun Application.module() {
                             onQueue.incrementAndGet()
                             val text = frame.readText()
                             val msg = "$user say: $text"
+                            println()
                             println(msg)
                             // Iterate over all the connections
                             println("broadcast to ${wsConnections.count()} online users")
