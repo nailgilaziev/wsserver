@@ -12,6 +12,7 @@ import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.time.delay
 import java.time.*
 import java.util.*
+import java.util.concurrent.atomic.AtomicInteger
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -26,11 +27,21 @@ fun Application.module() {
     }
 
     routing {
+        val onQueue: AtomicInteger = AtomicInteger(0)
+        val wsConnections = Collections.synchronizedSet(LinkedHashSet<DefaultWebSocketSession>())
+
         get("/") {
             call.respondText("HELLO WORLD with Netty!", contentType = ContentType.Text.Plain)
         }
+        get("/queue"){
+            call.respondText("""{
+                |  "messagesCount":${onQueue.get()}
+                |  "connections":[${wsConnections.map { "\n    $it" }}
+                |  ]
+                |}""".trimMargin(), contentType = ContentType.Application.Json)
+        }
 
-        val wsConnections = Collections.synchronizedSet(LinkedHashSet<DefaultWebSocketSession>())
+
         webSocket("/chat") {
             val user = this.hashCode()
             println("$user JOINED")
@@ -46,6 +57,7 @@ fun Application.module() {
                     val frame = incoming.receive()
                     when (frame) {
                         is Frame.Text -> {
+                            onQueue.incrementAndGet()
                             val text = frame.readText()
                             val msg = "$user say: $text"
                             println(msg)
@@ -53,6 +65,7 @@ fun Application.module() {
                             for (conn in wsConnections) {
                                 conn.outgoing.send(Frame.Text(msg))
                             }
+                            onQueue.decrementAndGet()
                         }
                     }
                 }
