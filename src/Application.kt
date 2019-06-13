@@ -62,8 +62,11 @@ fun Application.module() {
                             val msg = "$user say: $text"
                             println(msg)
                             // Iterate over all the connections
+                            println("broadcast to ${wsConnections.count()} online users")
                             for (conn in wsConnections) {
+                                print("send to ${conn.hashCode()}")
                                 conn.outgoing.send(Frame.Text(msg))
+                                println(" - succeed!")
                             }
                             onQueue.decrementAndGet()
                         }
