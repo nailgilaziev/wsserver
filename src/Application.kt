@@ -36,7 +36,7 @@ fun Application.module() {
         get("/queue"){
             call.respondText("""{
                 |  "messagesCount":${onQueue.get()},
-                |  "connections":[${wsConnections.map { "\n    \"$it\"" }.joinToString(", ")}
+                |  "connections":[${wsConnections.map { "\n    \"${it.hashCode()}\"" }.joinToString(", ")}
                 |  ]
                 |}""".trimMargin(), contentType = ContentType.Application.Json)
         }
